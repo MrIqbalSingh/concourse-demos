@@ -4,7 +4,7 @@ resources:
   type: git
   check_every: 1m
   source:
-    uri: https://github.com/jprelph/concourse-demos.git
+    uri: https://github.com/MrIqbalSingh/concourse-demos.git
     branch: main
 - name: test-image
   type: registry-image
@@ -55,3 +55,21 @@ jobs:
     - put: test-image
       params:
         image: image/image.tar
+- name: test-image
+  plan:
+    - get: test-image
+      trigger: true
+      passed: [create-image]
+    - task: test
+      config:
+        platform: linux
+        image_resource:
+          type: registry-image
+          source:
+            repository: mriqbalsingh/test-image
+        run:
+          path: sh
+          args:
+            - -exc
+            - |
+              curl bbc.co.uk

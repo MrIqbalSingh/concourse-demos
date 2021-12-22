@@ -18,14 +18,10 @@ jobs:
         image_resource:
           type: registry-image
           source:
-            repository: alpine
-            tag: latest
+            repository: oci-build-task
+        params:
+         DOCKERFILE: src/Dockerfile
         inputs:
         - name: src
         run:
-          path: /bin/sh
-          args:
-          - -exc
-          - |
-            cd src
-            ls
+          path: build
